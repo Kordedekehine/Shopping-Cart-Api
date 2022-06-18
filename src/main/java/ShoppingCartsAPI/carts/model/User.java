@@ -39,6 +39,16 @@ public class User {
             fetch = FetchType.LAZY)
     private List<Order> orders;
 
+    public User(String firstName, String lastName, String email, String phoneNumber,
+                Role role, String password) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.role = role;
+        this.password = password;
+    }
+
     public Integer getId() {
         return id;
     }

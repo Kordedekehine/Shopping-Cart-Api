@@ -10,6 +10,10 @@ public class SignupDto {
     private String lastname;
     @NotBlank
     private String email;
+
+    @NotBlank
+    private String phoneNumber;
+
     @NotBlank
     private String password;
 
@@ -27,6 +31,14 @@ public class SignupDto {
 
     public void setLastname(String lastname) {
         this.lastname = lastname;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public String getEmail() {

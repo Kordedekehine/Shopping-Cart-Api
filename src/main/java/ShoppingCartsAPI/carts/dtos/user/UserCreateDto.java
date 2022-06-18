@@ -10,6 +10,8 @@ public class UserCreateDto {
     private String firstname;
 
     @NotBlank
+    private String phoneNumber;
+    @NotBlank
     private String lastname;
     @NotBlank
     private String email;
@@ -36,6 +38,14 @@ public class UserCreateDto {
 
     public String getEmail() {
         return email;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public void setEmail(String email) {
