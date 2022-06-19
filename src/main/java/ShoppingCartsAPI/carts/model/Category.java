@@ -66,6 +66,14 @@ public class Category {
         this.imageUrl = imageUrl;
     }
 
+    public Set<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(Set<Product> products) {
+        this.products = products;
+    }
+
     @Override
     public String toString() {
         return "User {category id=" + id + "," +

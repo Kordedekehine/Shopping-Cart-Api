@@ -26,7 +26,7 @@ import java.security.NoSuchAlgorithmException;
 import static ShoppingCartsAPI.carts.config.StringMessages.USER_CREATED;
 
 @Service
-public class UserServices {
+public class UserService {
 
     @Autowired
     UserRepository userRepository;
@@ -34,7 +34,7 @@ public class UserServices {
     @Autowired
     AuthenticationServices authenticationServices;
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(UserServices.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(UserService.class);
 
       public ResponseDto signUp(SignupDto signupDto) throws CustomException{
           // Check to see if the current email address has already been registered.
@@ -66,10 +66,9 @@ public class UserServices {
           } catch (Exception ex){
               throw new CustomException(ex.getMessage());
           }
-
       }
 
-    public LoginResponseDto signIn(LoginDto loginDto) throws CustomException{
+    public LoginResponseDto LogIn(LoginDto loginDto) throws CustomException{
         // Check to see if the current email address has already been registered.
         User user = userRepository.findByEmail(loginDto.getEmail());
             if (Checker.notNull(user)){
@@ -100,7 +99,8 @@ public class UserServices {
         return myHash;
     }
 
-    public ResponseDto createUser(String token, UserCreateDto userCreateDto) throws CustomException,AuthenticationFailException{
+    public ResponseDto createUser(String token, UserCreateDto userCreateDto) throws CustomException,
+            AuthenticationFailException{
       User newUser = authenticationServices.getUser(token);
     if (!selectRole(newUser.getRole())){
         //user not allowed to create user
