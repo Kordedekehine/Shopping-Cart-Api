@@ -1,6 +1,7 @@
 package ShoppingCartsAPI.carts.model;
 //the product details
 
+import ShoppingCartsAPI.carts.dtos.product.ProductDto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
@@ -40,13 +41,13 @@ public class Product {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "product")
     private List<Carts> carts;
 
-//    public Product(ProductDto productDto, Category category) {
-//        this.name = productDto.getName();
-//        this.imageURL = productDto.getImageURL();
-//        this.description = productDto.getDescription();
-//        this.price = productDto.getPrice();
-//        this.category = category;
-//    }
+    public Product(ProductDto productDto, Category category) { //we shall be using this in the service class
+        this.name = productDto.getName();
+        this.imageURL = productDto.getImageURL();
+        this.description = productDto.getDescription();
+        this.price = productDto.getPrice();
+        this.category = category;
+    }
 
     public Product(String name, String imageURL, double price, String description, Category category) {
         this.name = name;
