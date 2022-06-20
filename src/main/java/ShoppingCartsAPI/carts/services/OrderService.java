@@ -20,6 +20,8 @@ public class OrderService {
 
     @Autowired
     OrderItemsRepository orderItemsRepository;
+    //sk_live_73d7f631c2c7036cd3975b171c3f4bf47854f96e
+    //pk_live_df3093fc1042351ca6d3eb74c695638c9bbbec5c
 
     @Value("${BASE_URL}")
     private String baseUrl;

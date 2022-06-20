@@ -3,10 +3,7 @@ package ShoppingCartsAPI.carts.services;
 import ShoppingCartsAPI.carts.config.StringMessages;
 import ShoppingCartsAPI.carts.dtos.ResponseDto;
 import ShoppingCartsAPI.carts.dtos.ResponseStatus;
-import ShoppingCartsAPI.carts.dtos.user.LoginDto;
-import ShoppingCartsAPI.carts.dtos.user.LoginResponseDto;
-import ShoppingCartsAPI.carts.dtos.user.SignupDto;
-import ShoppingCartsAPI.carts.dtos.user.UserCreateDto;
+import ShoppingCartsAPI.carts.dtos.user.*;
 import ShoppingCartsAPI.carts.exceptions.AuthenticationFailException;
 import ShoppingCartsAPI.carts.exceptions.CustomException;
 import ShoppingCartsAPI.carts.model.AuthenticationToken;
@@ -125,12 +122,34 @@ public class UserService {
         // handle user creation fail error
         throw new CustomException(e.getMessage());
     }
+      }
 
-    }
+      public ResponseDto updateUser(String token, UserUpdateDto userUpdateDto) throws CustomException,
+              AuthenticationFailException{
+          User newUser = authenticationServices.getUser(token);
+          if (selectRole(newUser.getRole())){
+              //user not allowed to create user
+              throw new AuthenticationFailException(StringMessages.AUTH_TOEKN_NOT_PRESENT);
+          }
+          //get user by email
+          User user = userRepository.findUserById(newUser.getId());
 
-    /*
-    In the select role method,we confirm that it is either the manager or the admin and not users. if it is the
-    admin or manager then return true, else, return false.
+          user.setFirstName(userUpdateDto.getFirstname());
+          user.setLastName(userUpdateDto.getLastname());
+          user.setRole(userUpdateDto.getRole());
+
+          userRepository.save(user);
+
+          final AuthenticationToken authenticationToken = new AuthenticationToken(newUser);
+          authenticationServices.saveConfirmationToken(authenticationToken);
+          return new ResponseDto(ResponseStatus.success.toString(), USER_CREATED);
+      }
+
+
+
+    /**
+    *In the select role method,we confirm that it is either the manager or the admin and not users. if it is the
+   * admin or manager then return true, else, return false.
      */
     boolean selectRole(Role role) {
         if (role == Role.ROLE_ADMIN || role == Role.ROLE_MANAGER) {
