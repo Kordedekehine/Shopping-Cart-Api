@@ -58,4 +58,12 @@ public class ProductService {
         }
         return optionalProduct.get();
     }
+
+    public void deleteProduct(Integer productId) {
+        Product delProduct = getProductById(productId);
+        if (delProduct == null){
+            throw new ProductNotExistException("Product does not exist " + productId);
+        }
+        productRepository.deleteById(delProduct);
+    }
 }

@@ -35,7 +35,7 @@ public class CategoryController {
     }
 
     @PostMapping("/update/{categoryId}")
-  public ResponseEntity<ApiResponse> updateCategory(@PathVariable ("CategoryID") Integer categoryId,@Valid @RequestParam Category category){
+  public ResponseEntity<ApiResponse> updateCategory(@PathVariable ("categoryId") Integer categoryId,@Valid @RequestParam Category category){
       //check if the category exists
       if (!Checker.notNull(categoryService.checkCategoryById(categoryId))){
           return new  ResponseEntity<>(new ApiResponse(false,"Category does not exist"),HttpStatus.CONFLICT);
@@ -43,6 +43,5 @@ public class CategoryController {
       categoryService.updateCategory(categoryId, category);//if the category exists then update it
       return new ResponseEntity<>(new ApiResponse(true,"Updated the Category!"),HttpStatus.OK);
   }
-
 
 }
