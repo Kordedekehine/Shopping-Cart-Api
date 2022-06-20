@@ -1,6 +1,6 @@
 package ShoppingCartsAPI.carts.exceptions;
 
-import com.webtutsplus.ecommerce.common.ApiResponse;
+import ShoppingCartsAPI.carts.api.ApiResponse;
 import org.springframework.core.NestedExceptionUtils;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
