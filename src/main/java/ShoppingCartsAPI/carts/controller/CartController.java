@@ -35,11 +35,11 @@ public class CartController {
     public ResponseEntity<ApiResponse> addToCart(@RequestBody AddToCartDto addToCartDto, @RequestParam ("token")
    String token)throws AuthenticationFailException, ProductNotExistException {
 
-    authenticationService.authenticate(token);
-       User user = authenticationService.getUser(token);
-       Product product = productService.getProductById(addToCartDto.getProductId());
-       System.out.println("Product in cart " + product);
-       cartService.addToCart(addToCartDto,product,user);
+    authenticationService.authenticate(token); //first authenticate the token
+       User user = authenticationService.getUser(token); //then get the user who owns the token
+       Product product = productService.getProductById(addToCartDto.getProductId()); //get product id and add product
+       System.out.println(product + "added to cart"); //print out added to cart
+       cartService.addToCart(addToCartDto,product,user); //add to cart
        return new ResponseEntity<>(new ApiResponse(true, "Added to cart"), HttpStatus.CREATED);
    }
 

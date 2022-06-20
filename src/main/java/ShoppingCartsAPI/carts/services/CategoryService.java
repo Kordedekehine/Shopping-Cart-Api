@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -27,9 +28,19 @@ public class CategoryService {
         categoryRepository.save(category);
     }
 
-   public void findCategory(String categoryName){
+    public Category checkCategory(String categoryName) {
+
+        return categoryRepository.findByCategoryName(categoryName);
+    }
+
+
+    public void findCategory(String categoryName){
         categoryRepository.findByCategoryName(categoryName);
    }
+
+    public Optional<Category> checkCategoryById(Integer categoryId) {
+        return categoryRepository.findById(categoryId);
+    }
 
    public void updateCategory(Integer categoryID,Category newCategory){
        Category category = categoryRepository.findById(categoryID).get();
