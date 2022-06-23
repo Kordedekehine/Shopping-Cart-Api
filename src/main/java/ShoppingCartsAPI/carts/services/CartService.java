@@ -44,7 +44,7 @@ private CartRepository cartRepository;
          double totalCost = 0;
          for (CartItemDto cartItemDto:cartItemDtos){
              totalCost += (cartItemDto.getProduct().getPrice() * cartItemDto.getQuantity());
-         //WE COLLATE EVERYTHING TOGETHER
+         //WE COLLATE EVERYTHING TOGETHER...price x how many we bought
              }
          return new CartDto(cartItemDtos,totalCost);
          //list all the goods in the cart and the overall price of those goods

@@ -34,7 +34,7 @@ public class FileStorageService {
              /**
              * General file name and file(FilenameUtils) path manipulation utilities.
              * When dealing with file names you can hit problems when moving from a Windows based development machine to a
-             * Unix based production machine.This class aims to help avoid those problems.
+             * Unix based production machine.This class aims to help avoid such problems.
              */
             String extension = FilenameUtils.getExtension(multipartFile.getOriginalFilename());
             String uploadedFilenames = UUID.randomUUID().toString() + " . " + extension;
