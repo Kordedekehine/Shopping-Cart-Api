@@ -27,7 +27,6 @@ public class Carts {
     @JoinColumn(nullable = false, name = "user_id")
     private User user;
 
-
     private int quantity;
 
     public Carts() {

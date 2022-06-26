@@ -56,9 +56,12 @@ private CartRepository cartRepository;
 
      public void updateCartItems(AddToCartDto addToCartDto,User user,Product product){
         Carts carts = cartRepository.getOne(addToCartDto.getId());
-        carts.setQuantity(addToCartDto.getQuantity());
-        carts.setCreatedDate(new Date());
-        cartRepository.save(carts);
+        if (user != null && product != null) {
+             carts.setQuantity(addToCartDto.getQuantity());
+             carts.setCreatedDate(new Date());
+             cartRepository.save(carts);
+         }
+         System.out.println("CURRENT USER DOES NOT EXIST IN THE LISTS OF USERS");
      }
 
      public void deleteCartItems(int id,int userId) throws CartItemNotExistException{

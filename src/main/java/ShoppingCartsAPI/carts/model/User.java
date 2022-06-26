@@ -7,7 +7,8 @@ import javax.validation.constraints.Email;
 import java.util.List;
 
 //the user details
-@Email
+//@Email
+@Entity
 @Table(name = "users")
 public class User {
 

@@ -26,17 +26,17 @@ public class Category {
 
     @OneToMany(mappedBy = "category", fetch = FetchType.LAZY,
             cascade = CascadeType.ALL)
-    Set<Product> products;
+   private Set<Product> products;
 
     public Category() {
     }
 
-    public Category(@NotBlank String categoryName, @NotBlank String description) {
+    public Category( String categoryName,  String description) {
         this.categoryName = categoryName;
         this.description = description;
     }
 
-    public Category(@NotBlank String categoryName, @NotBlank String description,@NotBlank String imageUrl) {
+    public Category( String categoryName,String description, String imageUrl) {
         this.categoryName = categoryName;
         this.description = description;
         this.imageUrl = imageUrl;
