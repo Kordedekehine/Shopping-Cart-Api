@@ -40,6 +40,9 @@ public class User {
             fetch = FetchType.LAZY)
     private List<Order> orders;
 
+    public User() {
+    }
+
     public User(String firstName, String lastName, String email, String phoneNumber,
                 Role role, String password) {
         this.firstName = firstName;

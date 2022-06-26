@@ -23,11 +23,11 @@ public class OrderService {
     //sk_live_73d7f631c2c7036cd3975b171c3f4bf47854f96e
     //pk_live_df3093fc1042351ca6d3eb74c695638c9bbbec5c
 
-    @Value("${BASE_URL}")
-    private String baseUrl;
-
-    @Value("${PAYSTACK_SECRET_KEY}")
-    private String apiKey;
+//    @Value("${BASE_URL}")
+//    private String baseUrl;
+//
+//    @Value("${PAYSTACK_SECRET_KEY}")
+ //   private String apiKey;
 
   //TRYING TO REGISTER TO PAYSTACK AND GENERATE THIER API KEY
 }
