@@ -6,6 +6,7 @@ import ShoppingCartsAPI.carts.dtos.ResponseStatus;
 import ShoppingCartsAPI.carts.dtos.user.*;
 import ShoppingCartsAPI.carts.exceptions.AuthenticationFailException;
 import ShoppingCartsAPI.carts.exceptions.CustomException;
+import ShoppingCartsAPI.carts.exceptions.UpdateFailException;
 import ShoppingCartsAPI.carts.model.AuthenticationToken;
 import ShoppingCartsAPI.carts.model.Role;
 import ShoppingCartsAPI.carts.model.User;
@@ -19,6 +20,8 @@ import org.springframework.stereotype.Service;
 import javax.xml.bind.DatatypeConverter;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
+import java.util.Optional;
 
 import static ShoppingCartsAPI.carts.config.StringMessages.USER_CREATED;
 
@@ -31,15 +34,36 @@ public class UserService {
     @Autowired
     AuthenticationServices authenticationServices;
 
+    /**
+     * Logger Slf4j is basically a fact-checker to easily trace our error or bugs in the class we're referencing
+     */
     private final static Logger LOGGER = LoggerFactory.getLogger(UserService.class);
 
+    public List<User> getAllUser(){
+       return userRepository.findAll();
+    }
+
+    /**
+     * First we create a method for signing up our client,leaving a parameter that accepts their basic details
+     * @param signupDto to collect all the data in the field
+     * @return
+     * @throws CustomException
+     * 1.Check to see if the current email address has already been registered.
+     * 2.if  registered already then throw an exception
+     * 3.if exists then encrypt the password
+     * 4.if the encryption fail, then throw an exception
+     * 5.if the encryption didn't fail,then collect all the clients datas
+     * 6. Then save it into the repository,with the variable newUser
+     * 7.then we generate and save the new user token
+     * 8.Then we put out a response of success,then if not saved,print out an error
+     */
       public ResponseDto signUp(SignupDto signupDto) throws CustomException{
-          // Check to see if the current email address has already been registered.
+
           if (Checker.notNull(userRepository.findByEmail(signupDto.getEmail()))){
-              //if registered already then throw an exception
+
               throw new CustomException("User already exists");
           }
-          //first encrypt the password
+
           String encryptedPassword = signupDto.getPassword();
           try{
               encryptedPassword = hashPassword(signupDto.getPassword());
@@ -54,10 +78,8 @@ public class UserService {
           try {
              newUser = userRepository.save(user);
 
-             //here we generate and save the new user token
              final AuthenticationToken authenticationToken = new AuthenticationToken(newUser);
              authenticationServices.saveConfirmationToken(authenticationToken);
-
              //return new ResponseDto(HttpStatus.ACCEPTED.toString(),USER_CREATED);
               return new ResponseDto(ResponseStatus.success.toString(),USER_CREATED);
           } catch (Exception ex){
@@ -65,10 +87,17 @@ public class UserService {
           }
       }
 
+    /**
+     *  we create a method for signing in our client,leaving a parameter that accepts their email and password
+     * @param loginDto
+     * @return
+     * @throws CustomException
+     */
+
     public LoginResponseDto LogIn(LoginDto loginDto) throws CustomException{
         // Check to see if the current email address has already been registered.
         User user = userRepository.findByEmail(loginDto.getEmail());
-            if (Checker.notNull(user)){
+            if (!Checker.notNull(user)){
                 throw new AuthenticationFailException("User cannot be found");
         }
             try {
@@ -124,28 +153,25 @@ public class UserService {
     }
       }
 
-      public ResponseDto updateUser(String token, UserUpdateDto userUpdateDto) throws CustomException,
-              AuthenticationFailException{
-          User newUser = authenticationServices.getUser(token);
-          if (selectRole(newUser.getRole())){
-              //user not allowed to create user
-              throw new AuthenticationFailException(StringMessages.AUTH_TOEKN_NOT_PRESENT);
-          }
+      public ResponseDto updateUser( UserUpdateDto userUpdateDto,Integer id) throws UpdateFailException {
+
           //get user by email
-          User user = userRepository.findUserById(newUser.getId());
+          Optional<User> users = userRepository.findById(id);
+
+          if (users.isEmpty()){
+              throw new UpdateFailException("USER DOES NOT EXIST");
+          }
+           User user = users.get();
 
           user.setFirstName(userUpdateDto.getFirstname());
           user.setLastName(userUpdateDto.getLastname());
-          user.setRole(userUpdateDto.getRole());
+          user.setPhoneNumber(userUpdateDto.getPhoneNumber());
+          //user.setRole(userUpdateDto.getRole());
 
           userRepository.save(user);
 
-          final AuthenticationToken authenticationToken = new AuthenticationToken(newUser);
-          authenticationServices.saveConfirmationToken(authenticationToken);
           return new ResponseDto(ResponseStatus.success.toString(), USER_CREATED);
       }
-
-
 
     /**
     *In the select role method,we confirm that it is either the manager or the admin and not users. if it is the

@@ -14,14 +14,14 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @NotBlank
+
     @Column(name = "category_name")
     private  String categoryName;
 
-    @NotBlank
+
     private String description;
 
-    @NotBlank
+
     private  String imageUrl;
 
     @OneToMany(mappedBy = "category", fetch = FetchType.LAZY,
@@ -72,6 +72,14 @@ public class Category {
 
     public void setProducts(Set<Product> products) {
         this.products = products;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     @Override

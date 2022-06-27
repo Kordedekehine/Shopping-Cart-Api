@@ -23,6 +23,9 @@ public class WishList {
     @JoinColumn(name = "product_id")
     private Product product;
 
+    public WishList() {
+    }
+
     public WishList(User user, Product product) {
         this.user = user;
         this.product = product;

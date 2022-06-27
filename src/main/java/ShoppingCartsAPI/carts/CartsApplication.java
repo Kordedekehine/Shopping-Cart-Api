@@ -7,7 +7,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class CartsApplication {
 
 	public static void main(String[] args) {
+
 		SpringApplication.run(CartsApplication.class, args);
+		System.out.println("Finished running Korede's Shopping Cart Api");
 	}
 
 }

@@ -7,7 +7,6 @@ import javax.validation.constraints.NotNull;
 
 public class ProductDto {
 
-    private Integer id;
     @NotBlank
     private  String name;
     @NotBlank
@@ -21,7 +20,6 @@ public class ProductDto {
 
     //one product is comprises with all this feature
     public ProductDto(Product product) {
-        this.setId(getId());
         this.setCategoryId(getCategoryId());
         this.setDescription(getDescription());
         this.setName(getName());
@@ -29,9 +27,9 @@ public class ProductDto {
         this.setPrice(getPrice());
     }
 
-    public ProductDto(Integer id, String name, String imageURL, double price,
+    public ProductDto( String name, String imageURL, double price,
                       String description, Integer categoryId) {
-        this.id = id;
+
         this.name = name;
         this.imageURL = imageURL;
         this.price = price;
@@ -39,15 +37,7 @@ public class ProductDto {
         this.categoryId = categoryId;
     }
 
-    public Integer getId() {
-        return id;
-    }
-
     public ProductDto() {
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public String getName() {

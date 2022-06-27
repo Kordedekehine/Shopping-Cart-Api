@@ -1,5 +1,6 @@
 package ShoppingCartsAPI.carts.services;
 
+import ShoppingCartsAPI.carts.dtos.category.CategoryDto;
 import ShoppingCartsAPI.carts.model.Category;
 import ShoppingCartsAPI.carts.repositories.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,5 +51,14 @@ public class CategoryService {
        category.setImageUrl(newCategory.getImageUrl());
 
        categoryRepository.save(category);
+   }
+
+   public void deleteCategory(Integer categoryID){
+        Optional<Category> category = categoryRepository.findById(categoryID);
+
+       if (category.isEmpty()) {
+           System.out.println("Category does not exist");
+       }
+       categoryRepository.deleteById(categoryID);
    }
 }

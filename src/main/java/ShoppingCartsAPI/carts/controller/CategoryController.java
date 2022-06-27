@@ -19,14 +19,14 @@ public class CategoryController {
     @Autowired
     CategoryService categoryService;
 
-    @GetMapping("/getAllCategories")
+    @GetMapping("/listCategory")
     public ResponseEntity<List<Category>> getCategories(){
         List<Category> allItems = categoryService.listCategories();
         return new ResponseEntity<>(allItems, HttpStatus.OK);
     }
 
     @PostMapping("/create")
-    public ResponseEntity<ApiResponse> createCategory(@Valid @RequestParam Category category){
+    public ResponseEntity<ApiResponse> createCategory(@Valid @RequestBody Category category){
         if (Checker.notNull(categoryService.checkCategory(category.getCategoryName()))){
             return new ResponseEntity<>(new ApiResponse(false,"categories already exists"),HttpStatus.CONFLICT);
         }
@@ -34,8 +34,8 @@ public class CategoryController {
         return new ResponseEntity<>(new ApiResponse(true,"successfully created category"),HttpStatus.OK);
     }
 
-    @PostMapping("/update/{categoryId}")
-  public ResponseEntity<ApiResponse> updateCategory(@PathVariable ("categoryId") Integer categoryId,@Valid @RequestParam Category category){
+    @PutMapping("/update/{categoryId}")
+  public ResponseEntity<ApiResponse> updateCategory(@PathVariable ("categoryId") Integer categoryId,@Valid @RequestBody Category category){
       //check if the category exists
       if (!Checker.notNull(categoryService.checkCategoryById(categoryId))){
           return new  ResponseEntity<>(new ApiResponse(false,"Category does not exist"),HttpStatus.CONFLICT);
@@ -44,4 +44,12 @@ public class CategoryController {
       return new ResponseEntity<>(new ApiResponse(true,"Updated the Category!"),HttpStatus.OK);
   }
 
+  @DeleteMapping("/delete/{categoryId}")
+    public ResponseEntity<ApiResponse> deleteCategory(@PathVariable ("categoryId")Integer categoryId, @Valid @RequestBody Category category) {
+      if (!Checker.notNull(categoryService.checkCategoryById(categoryId))) {
+          return new ResponseEntity<>(new ApiResponse(false, "Category does not exist"), HttpStatus.BAD_REQUEST);
+      }
+        categoryService.deleteCategory(categoryId);
+      return new ResponseEntity<>(new ApiResponse(true,"Category successfully deleted"),HttpStatus.OK);
+  }
 }

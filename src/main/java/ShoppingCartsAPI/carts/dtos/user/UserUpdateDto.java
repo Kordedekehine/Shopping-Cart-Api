@@ -10,6 +10,8 @@ public class UserUpdateDto {
 
     private String lastname;
 
+    private String phoneNumber;
+
     private Role role;
 
     public Integer getId() {
@@ -30,6 +32,14 @@ public class UserUpdateDto {
 
     public String getLastname() {
         return lastname;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public void setLastname(String lastname) {
