@@ -8,6 +8,7 @@ import ShoppingCartsAPI.carts.exceptions.CartItemNotExistException;
 import ShoppingCartsAPI.carts.exceptions.ProductNotExistException;
 import ShoppingCartsAPI.carts.model.Product;
 import ShoppingCartsAPI.carts.model.User;
+import ShoppingCartsAPI.carts.repositories.UserRepository;
 import ShoppingCartsAPI.carts.services.AuthenticationServices;
 import ShoppingCartsAPI.carts.services.CartService;
 import ShoppingCartsAPI.carts.services.ProductService;
@@ -17,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/cart")
@@ -29,10 +31,13 @@ public class CartController {
     private ProductService productService;
 
     @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
     private AuthenticationServices authenticationService;
 
-   @PostMapping("/addCart/{token}")
-    public ResponseEntity<ApiResponse> addToCart(@RequestBody AddToCartDto addToCartDto, @RequestParam ("token")
+   @PostMapping("/addCart")
+    public ResponseEntity<ApiResponse> addToCart(@RequestBody AddToCartDto addToCartDto, @RequestHeader ("token")
    String token)throws AuthenticationFailException, ProductNotExistException {
 
     authenticationService.authenticate(token); //first authenticate the token
@@ -42,6 +47,16 @@ public class CartController {
        cartService.addToCart(addToCartDto,product,user); //add to cart
        return new ResponseEntity<>(new ApiResponse(true, "Added to cart"), HttpStatus.CREATED);
    }
+
+//    @PostMapping("/add/{userId}")
+//    public ResponseEntity<ApiResponse> addToCart(@RequestBody AddToCartDto addToCartDto,@PathVariable("userId") Integer userId) throws AuthenticationFailException,
+//            ProductNotExistException{
+//        User user = userRepository.findById(userId).get();
+//        Product product = productService.getProductById(addToCartDto.getProductId());
+//        System.out.println(product + "added to cart");
+//        cartService.addToCart(addToCartDto,product,user);
+//        return new ResponseEntity<>(new ApiResponse(true,"Successfully added to cart"),HttpStatus.OK);
+//    }
 
    @GetMapping("/listItems")
     public ResponseEntity<CartDto> getCartItems(@RequestParam ("token") String token)

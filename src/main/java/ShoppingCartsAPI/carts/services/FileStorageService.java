@@ -1,11 +1,17 @@
 package ShoppingCartsAPI.carts.services;
 
 import ShoppingCartsAPI.carts.config.StorageProperties;
+import ShoppingCartsAPI.carts.controller.FileUploadController;
+import ShoppingCartsAPI.carts.dtos.file.FileInfoDto;
 import ShoppingCartsAPI.carts.exceptions.StorageException;
+import ShoppingCartsAPI.carts.model.FileInfo;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import org.springframework.core.io.Resource;
@@ -16,13 +22,17 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
 public class FileStorageService {
 
     private StorageProperties properties = new StorageProperties();
+
+
 
     Path rootLocation = Paths.get(properties.getLocation()); //trace the upload directory
 

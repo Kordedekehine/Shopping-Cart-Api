@@ -2,34 +2,27 @@ package ShoppingCartsAPI.carts.dtos.product;
 
 import ShoppingCartsAPI.carts.model.Product;
 
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 public class ProductDto {
 
-    @NotBlank
+    private Integer id;
     private  String name;
-    @NotBlank
-    private String imageURL;
-    @NotBlank
-    private double price;
-    @NotBlank
-    private String description;
-    @NotNull
+    private  String imageURL;
+    private  double price;
+    private  String description;
     private  Integer categoryId;
 
-    //one product is comprises with all this feature
     public ProductDto(Product product) {
-        this.setCategoryId(getCategoryId());
-        this.setDescription(getDescription());
-        this.setName(getName());
-        this.setImageURL(getImageURL());
-        this.setPrice(getPrice());
+        this.setId(product.getId());
+        this.setName(product.getName());
+        this.setImageURL(product.getImageURL());
+        this.setDescription(product.getDescription());
+        this.setPrice(product.getPrice());
+        this.setCategoryId(product.getCategory().getId());
     }
 
-    public ProductDto( String name, String imageURL, double price,
-                      String description, Integer categoryId) {
-
+    public ProductDto(@NotNull String name, @NotNull String imageURL, @NotNull double price, @NotNull String description, @NotNull Integer categoryId) {
         this.name = name;
         this.imageURL = imageURL;
         this.price = price;
@@ -38,6 +31,14 @@ public class ProductDto {
     }
 
     public ProductDto() {
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getName() {

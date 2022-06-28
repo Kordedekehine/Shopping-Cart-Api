@@ -1,6 +1,7 @@
 package ShoppingCartsAPI.carts.services;
 
 import ShoppingCartsAPI.carts.dtos.product.ProductDto;
+import ShoppingCartsAPI.carts.exceptions.CustomException;
 import ShoppingCartsAPI.carts.exceptions.ProductNotExistException;
 import ShoppingCartsAPI.carts.model.Category;
 import ShoppingCartsAPI.carts.model.Product;
@@ -18,12 +19,10 @@ public class ProductService {
     @Autowired
     ProductRepository productRepository;
 
-    public List<ProductDto> listAllProducts(){
-        //find all inside products
+    public List<ProductDto> listProducts() {
         List<Product> products = productRepository.findAll();
-        //get through all the list using the dtos, instead of making expensive calls to the remote entity Product
         List<ProductDto> productDtos = new ArrayList<>();
-        for (Product product: products){
+        for(Product product : products) {
             ProductDto productDto = getDtoFromProduct(product);
             productDtos.add(productDto);
         }
@@ -59,11 +58,20 @@ public class ProductService {
         return optionalProduct.get();
     }
 
-    public void deleteProduct(Integer productId) {
-        Product delProduct = getProductById(productId);
-        if (delProduct == null){
-            throw new ProductNotExistException("Product does not exist " + productId);
+//    public void deleteProduct(Integer productId) {
+//        Product delProduct = getProductById(productId);
+//        if (delProduct == null){
+//            throw new ProductNotExistException("Product does not exist " + productId);
+//        }
+//        productRepository.deleteById(delProduct);
+//    }
+
+    public void deleteProduct(Integer productId,ProductDto productDto) throws CustomException {
+        Optional<Product> product = productRepository.findById(productId);
+
+        if (product.isEmpty()){
+          throw new CustomException("Product does not exist");
         }
-        productRepository.deleteById(delProduct);
+        productRepository.deleteById(productId);
     }
 }

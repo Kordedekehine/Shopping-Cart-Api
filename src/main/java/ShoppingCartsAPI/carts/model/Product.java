@@ -80,6 +80,30 @@ public class Product {
         return price;
     }
 
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public List<WishList> getWishListList() {
+        return wishListList;
+    }
+
+    public void setWishListList(List<WishList> wishListList) {
+        this.wishListList = wishListList;
+    }
+
+    public List<Carts> getCarts() {
+        return carts;
+    }
+
+    public void setCarts(List<Carts> carts) {
+        this.carts = carts;
+    }
+
     public void setPrice(double price) {
         this.price = price;
     }

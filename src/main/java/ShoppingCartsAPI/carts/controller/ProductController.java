@@ -3,7 +3,6 @@ package ShoppingCartsAPI.carts.controller;
 import ShoppingCartsAPI.carts.api.ApiResponse;
 import ShoppingCartsAPI.carts.dtos.product.ProductDto;
 import ShoppingCartsAPI.carts.model.Category;
-import ShoppingCartsAPI.carts.repositories.ProductRepository;
 import ShoppingCartsAPI.carts.services.CategoryService;
 import ShoppingCartsAPI.carts.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,12 +24,11 @@ public class ProductController {
    @Autowired
     CategoryService categoryService; //note we are navigating through categories to the products
 
-    @GetMapping("/getAllProducts")
-    public ResponseEntity<List<ProductDto>> getProduct(){
-        List<ProductDto> findProduct = productService.listAllProducts();
-        return new ResponseEntity<>(findProduct, HttpStatus.OK);
+    @GetMapping("/listProducts")
+    public ResponseEntity<List<ProductDto>> getProducts() {
+        List<ProductDto> body = productService.listProducts();
+        return new ResponseEntity<List<ProductDto>>(body, HttpStatus.OK);
     }
-
     @PostMapping("/addProduct")
     public ResponseEntity<ApiResponse> addProduct(@RequestBody ProductDto productDto){
         //list all categories WE Wanna add product to  by the id
@@ -55,14 +53,15 @@ public class ProductController {
     return new ResponseEntity<>(new ApiResponse(true,"product successfully updated"),HttpStatus.OK);
     }
 
-    public ResponseEntity<ApiResponse> deleteProduct(@PathVariable ("ProductId") Integer productId,
+    @DeleteMapping("/delete/{productId}")
+    public ResponseEntity<ApiResponse> deleteProduct(@PathVariable ("productId") Integer productId,
     @RequestBody @Valid ProductDto productDto){
         Optional<Category> optionalCategory = categoryService.checkCategoryById(productDto.getCategoryId());
         if (!optionalCategory.isPresent()){
             return new ResponseEntity<>(new ApiResponse(false,"null category"),HttpStatus.CONFLICT);
         }
         Category category = optionalCategory.get();
-        productService.deleteProduct(productId);
+        productService.deleteProduct(productId,productDto);
         return new ResponseEntity<>(new ApiResponse(true,"product successfully deleted"),HttpStatus.OK);
     }
 
